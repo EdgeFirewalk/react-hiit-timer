@@ -1,0 +1,22 @@
+@import 'variables';
+
+.App-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    margin: 0 5px;
+
+    border: 2px solid $appBlack;
+    border-radius: 5px;
+
+    transition-property: background-color, border;
+    transition-duration: $appTransitionDuration;
+}
+
+.App-button:hover {
+    background-color: $appLightBlue;
+    border: 2px solid $appBlue;
+
+    cursor: pointer;
+}
