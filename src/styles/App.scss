@@ -4,3 +4,11 @@
     width: 24px;
     height: 24px;
 }
+
+.App-title {
+    font-family: 'Gotham Pro Medium', sans-serif;
+    text-align: center;
+    text-transform: uppercase;
+
+    text-shadow: 3px 3px 0 $appShadow;
+}
