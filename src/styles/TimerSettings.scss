@@ -1,0 +1,83 @@
+@import 'variables';
+
+.timer-settings {
+    position: fixed;
+    top: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+
+    background-color: rgba(0, 0, 0, 0.65);
+
+    z-index: 9999999;
+}
+
+.timer-settings__inner {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 35%;
+    padding: 25px;
+    margin: 0 auto;
+
+    background-color: $appBackground;
+}
+
+.timer-settings__close-button {
+    position: absolute;
+    top: -30px;
+    right: -33px;
+
+    background-color: rgba($appRed, 0.75);
+}
+
+.timer-settings__close-button:hover {
+    background-color: $appRed !important;
+    border: 2px solid $appBlack !important;
+}
+
+.timer-settings__title {
+    margin-bottom: 20px;
+
+    font-size: 25px;
+    font-family: 'Gotham Pro Medium', sans-serif;
+    text-transform: uppercase;
+}
+
+.settings-inputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+}
+
+.settings-inputs__block {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    width: 100%;
+    margin: 5px 0;
+}
+
+.settings-inputs__input {
+    width: 50px;
+    padding: 3px;
+
+    text-align: center;
+
+    border: none;
+    border-bottom: 2px solid $appBlack;
+
+    outline: none;
+}
+
+.settings-inputs__input:focus {
+    border-bottom: 2px solid $appBlue;
+}
