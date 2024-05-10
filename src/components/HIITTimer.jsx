@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import useSound from 'use-sound';
 
 import '../styles/HIITTimer.scss';
@@ -11,13 +11,12 @@ import ResetIcon from '../img/reset-icon.svg';
 import NextExerciseIcon from '../img/next-icon.svg';
 
 import OpenSettingsSound from '../sounds/settings-open.mp3';
-import CloseSettingsSound from '../sounds/settings-close.mp3';
 import CountdownSound from '../sounds/countdown.mp3';
 import BeepSound from '../sounds/beep.mp3';
 
 import AppButton from './AppButton';
 
-const HIITTimer = () => {
+const HIITTimer = ({ OpenOrCloseTimerSettingsWindow }) => {
     /* Timer things */
     const [timerSettings, setTimerSettings] = useState({
         workTime: 45,
@@ -32,12 +31,12 @@ const HIITTimer = () => {
 
     /* UI sounds */
     const [playOpenSettingsSound] = useSound(OpenSettingsSound);
-    const [playCloseSettingsSound] = useSound(CloseSettingsSound);
     const [playCountdownSound] = useSound(CountdownSound);
     const [playBeepSound] = useSound(BeepSound);
 
     function openTimerSettings() {
         playOpenSettingsSound();
+        OpenOrCloseTimerSettingsWindow();
     }
 
     useEffect(() => {
@@ -49,23 +48,28 @@ const HIITTimer = () => {
             if (workoutState === 'work') {
                 setCurrentTime(timerSettings.restTime);
                 setWorkoutState('rest');
-            }
-            else {
+            } else {
                 setCurrentTime(timerSettings.workTime);
                 setWorkoutState('work');
             }
             playBeepSound();
         }
-    }, [currentTime, workoutState, timerSettings.restTime, timerSettings.workTime]);
+    }, [
+        currentTime,
+        workoutState,
+        timerSettings.restTime,
+        timerSettings.workTime
+    ]);
 
     function startOrPauseTimer() {
         if (!isTimerRunning) {
-            setTimerID(setInterval(() => {
-                setCurrentTime((prevTime) => prevTime - 1);
-            }, 1000));
+            setTimerID(
+                setInterval(() => {
+                    setCurrentTime((prevTime) => prevTime - 1);
+                }, 1000)
+            );
             setIsTimerRunning(true);
-        }
-        else {
+        } else {
             clearInterval(timerID);
             setIsTimerRunning(false);
         }
