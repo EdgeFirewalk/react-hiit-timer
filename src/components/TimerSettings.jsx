@@ -10,8 +10,10 @@ import CloseSettingsSound from '../sounds/settings-close.mp3';
 import AppButton from './AppButton';
 
 const TimerSettings = ({
+    TimerSettings,
+    SetTimerSettings,
     OpenOrCloseTimerSettingsWindow,
-    TimerSettingsStyle
+    TimerSettingsWindowStyle
 }) => {
     const [playCloseSettingsSound] = useSound(CloseSettingsSound);
 
@@ -21,7 +23,7 @@ const TimerSettings = ({
     }
 
     return (
-        <div className="timer-settings" style={TimerSettingsStyle}>
+        <div className="timer-settings" style={TimerSettingsWindowStyle}>
             <div className="container">
                 <div className="timer-settings__inner">
                     <AppButton
@@ -29,7 +31,7 @@ const TimerSettings = ({
                         AdditionalClass="timer-settings__close-button"
                         OnClick={closeTimerSettings}
                     />
-                    <p className="timer-settings__title">Settings</p>
+                    <p className="timer-settings__title App-title">Settings</p>
                     <div className="settings-inputs">
                         <div className="settings-inputs__block">
                             <label
@@ -42,6 +44,16 @@ const TimerSettings = ({
                                 id="work-input"
                                 className="settings-inputs__input"
                                 type="text"
+                                value={TimerSettings.workTime}
+                                onChange={(e) =>
+                                    SetTimerSettings({
+                                        ...TimerSettings,
+                                        workTime: !isNaN(e.target.value)
+                                            ? parseInt(e.target.value)
+                                            : 45
+                                    })
+                                }
+                                onFocus={(e) => e.target.select()}
                             />
                         </div>
                         <div className="settings-inputs__block">
@@ -55,9 +67,23 @@ const TimerSettings = ({
                                 id="rest-input"
                                 className="settings-inputs__input"
                                 type="text"
+                                value={TimerSettings.restTime}
+                                onChange={(e) =>
+                                    SetTimerSettings({
+                                        ...TimerSettings,
+                                        restTime: !isNaN(e.target.value)
+                                            ? parseInt(e.target.value)
+                                            : 15
+                                    })
+                                }
+                                onFocus={(e) => e.target.select()}
                             />
                         </div>
                     </div>
+                    <p className="timer-settings__tip">
+                        Don't forget to reset timer when you change any of these
+                        settings!
+                    </p>
                 </div>
             </div>
         </div>
