@@ -16,13 +16,9 @@ import BeepSound from '../sounds/beep.mp3';
 
 import AppButton from './AppButton';
 
-const HIITTimer = ({ OpenOrCloseTimerSettingsWindow }) => {
+const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
     /* Timer things */
-    const [timerSettings, setTimerSettings] = useState({
-        workTime: 45,
-        restTime: 15
-    });
-    const [currentTime, setCurrentTime] = useState(timerSettings.workTime);
+    const [currentTime, setCurrentTime] = useState(TimerSettings.workTime);
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [timerID, setTimerID] = useState(null);
 
@@ -34,7 +30,7 @@ const HIITTimer = ({ OpenOrCloseTimerSettingsWindow }) => {
     const [playCountdownSound] = useSound(CountdownSound);
     const [playBeepSound] = useSound(BeepSound);
 
-    function openTimerSettings() {
+    function openTimerSettingsWindow() {
         playOpenSettingsSound();
         OpenOrCloseTimerSettingsWindow();
     }
@@ -46,10 +42,10 @@ const HIITTimer = ({ OpenOrCloseTimerSettingsWindow }) => {
 
         if (currentTime <= 0) {
             if (workoutState === 'work') {
-                setCurrentTime(timerSettings.restTime);
+                setCurrentTime(TimerSettings.restTime);
                 setWorkoutState('rest');
             } else {
-                setCurrentTime(timerSettings.workTime);
+                setCurrentTime(TimerSettings.workTime);
                 setWorkoutState('work');
             }
             playBeepSound();
@@ -57,8 +53,10 @@ const HIITTimer = ({ OpenOrCloseTimerSettingsWindow }) => {
     }, [
         currentTime,
         workoutState,
-        timerSettings.restTime,
-        timerSettings.workTime
+        TimerSettings.restTime,
+        TimerSettings.workTime,
+        playBeepSound,
+        playCountdownSound
     ]);
 
     function startOrPauseTimer() {
@@ -77,8 +75,8 @@ const HIITTimer = ({ OpenOrCloseTimerSettingsWindow }) => {
 
     function resetTimer() {
         workoutState === 'work'
-            ? setCurrentTime(timerSettings.workTime)
-            : setCurrentTime(timerSettings.restTime);
+            ? setCurrentTime(TimerSettings.workTime)
+            : setCurrentTime(TimerSettings.restTime);
     }
 
     return (
@@ -88,9 +86,11 @@ const HIITTimer = ({ OpenOrCloseTimerSettingsWindow }) => {
                     <AppButton
                         AdditionalClass="hiit-timer__settings"
                         ButtonIcon={SettingsIcon}
-                        OnClick={openTimerSettings}
+                        OnClick={openTimerSettingsWindow}
                     />
-                    <div className="hiit-timer__stage">{workoutState}</div>
+                    <div className="hiit-timer__stage App-title">
+                        {workoutState}
+                    </div>
                     <div className="hiit-timer__time">{currentTime}</div>
                     <div className="timer-buttons">
                         <AppButton ButtonIcon={PreviousExerciseIcon} />
