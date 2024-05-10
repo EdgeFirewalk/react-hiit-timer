@@ -6,6 +6,13 @@ import TimerSettings from './components/TimerSettings';
 import HIITTimer from './components/HIITTimer';
 
 function App() {
+    const [timerSettings, setTimerSettings] = useState({
+        workTime: 45,
+        restTime: 15
+    });
+
+    // Здесь в useEffect получать данные о настройках таймера из localStorage
+
     const [isTimerSettingsWindowOpen, setIsTimerSettingsWindowOpen] =
         useState(false);
 
@@ -18,12 +25,15 @@ function App() {
     return (
         <div className="App">
             <TimerSettings
+                TimerSettings={timerSettings}
+                SetTimerSettings={setTimerSettings}
                 OpenOrCloseTimerSettingsWindow={openOrCloseTimerSettingsWindow}
-                TimerSettingsStyle={{
+                TimerSettingsWindowStyle={{
                     visibility: isTimerSettingsWindowOpen ? 'visible' : 'hidden'
                 }}
             />
             <HIITTimer
+                TimerSettings={timerSettings}
                 OpenOrCloseTimerSettingsWindow={openOrCloseTimerSettingsWindow}
             />
         </div>
