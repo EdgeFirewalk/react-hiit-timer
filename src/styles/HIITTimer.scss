@@ -17,7 +17,7 @@
 }
 
 .hiit-timer__stage {
-    font-size: 85px;
+    font-size: $timerStageFontSize;
 }
 
 .hiit-timer__time {
@@ -30,7 +30,7 @@
     padding: 80px;
 
     font-family: 'Gotham Pro Light', sans-serif;
-    font-size: 120px;
+    font-size: $timerTimeFontSize;
 
     border: 3px solid $appBlue;
     border-radius: 100%;
