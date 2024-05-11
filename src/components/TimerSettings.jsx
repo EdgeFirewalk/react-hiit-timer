@@ -48,12 +48,12 @@ const TimerSettings = ({
                                 onChange={(e) =>
                                     SetTimerSettings({
                                         ...TimerSettings,
-                                        workTime: !isNaN(e.target.value)
+                                        workTime: !isNaN(parseInt(e.target.value)) && parseInt(e.target.value) <= 999 && parseInt(e.target.value) !== 0
                                             ? parseInt(e.target.value)
                                             : 45
                                     })
                                 }
-                                onFocus={(e) => e.target.select()}
+                                onClick={(e) => e.target.select()}
                             />
                         </div>
                         <div className="settings-inputs__block">
@@ -71,12 +71,12 @@ const TimerSettings = ({
                                 onChange={(e) =>
                                     SetTimerSettings({
                                         ...TimerSettings,
-                                        restTime: !isNaN(e.target.value)
+                                        restTime: !isNaN(parseInt(e.target.value)) && parseInt(e.target.value) <= 999 && parseInt(e.target.value) !== 0
                                             ? parseInt(e.target.value)
                                             : 15
                                     })
                                 }
-                                onFocus={(e) => e.target.select()}
+                                onClick={(e) => e.target.select()}
                             />
                         </div>
                     </div>
