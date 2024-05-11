@@ -48,9 +48,12 @@ const TimerSettings = ({
                                 onChange={(e) =>
                                     SetTimerSettings({
                                         ...TimerSettings,
-                                        workTime: !isNaN(parseInt(e.target.value)) && parseInt(e.target.value) <= 999 && parseInt(e.target.value) !== 0
-                                            ? parseInt(e.target.value)
-                                            : 45
+                                        workTime:
+                                            !isNaN(parseInt(e.target.value)) &&
+                                            parseInt(e.target.value) <= 999 &&
+                                            parseInt(e.target.value) !== 0
+                                                ? parseInt(e.target.value)
+                                                : 45
                                     })
                                 }
                                 onClick={(e) => e.target.select()}
@@ -71,9 +74,12 @@ const TimerSettings = ({
                                 onChange={(e) =>
                                     SetTimerSettings({
                                         ...TimerSettings,
-                                        restTime: !isNaN(parseInt(e.target.value)) && parseInt(e.target.value) <= 999 && parseInt(e.target.value) !== 0
-                                            ? parseInt(e.target.value)
-                                            : 15
+                                        restTime:
+                                            !isNaN(parseInt(e.target.value)) &&
+                                            parseInt(e.target.value) <= 999 &&
+                                            parseInt(e.target.value) !== 0
+                                                ? parseInt(e.target.value)
+                                                : 15
                                     })
                                 }
                                 onClick={(e) => e.target.select()}

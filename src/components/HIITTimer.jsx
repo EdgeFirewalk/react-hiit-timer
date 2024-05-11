@@ -49,7 +49,10 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
     }
 
     useEffect(() => {
-        window.document.body.addEventListener('keydown', handleTimerKeyboardButtonPressed);
+        window.document.body.addEventListener(
+            'keydown',
+            handleTimerKeyboardButtonPressed
+        );
 
         if (currentTime <= 3 && currentTime !== 0) {
             playCountdownSound();
@@ -67,8 +70,11 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
         }
 
         return () => {
-            window.document.body.removeEventListener('keydown', handleTimerKeyboardButtonPressed);
-        }
+            window.document.body.removeEventListener(
+                'keydown',
+                handleTimerKeyboardButtonPressed
+            );
+        };
     }, [
         currentTime,
         workoutState,
