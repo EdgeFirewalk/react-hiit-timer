@@ -35,7 +35,22 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
         OpenOrCloseTimerSettingsWindow();
     }
 
+    function handleTimerKeyboardButtonPressed(e) {
+        switch (e.keyCode) {
+            case 32:
+                startOrPauseTimer();
+                break;
+            case 82:
+                resetTimer();
+                break;
+            default:
+                break;
+        }
+    }
+
     useEffect(() => {
+        window.document.body.addEventListener('keydown', handleTimerKeyboardButtonPressed);
+
         if (currentTime <= 3 && currentTime !== 0) {
             playCountdownSound();
         }
@@ -50,27 +65,33 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
             }
             playBeepSound();
         }
+
+        return () => {
+            window.document.body.removeEventListener('keydown', handleTimerKeyboardButtonPressed);
+        }
     }, [
         currentTime,
         workoutState,
         TimerSettings.restTime,
         TimerSettings.workTime,
         playBeepSound,
-        playCountdownSound
+        playCountdownSound,
+        handleTimerKeyboardButtonPressed
     ]);
 
     function startOrPauseTimer() {
-        if (!isTimerRunning) {
-            setTimerID(
-                setInterval(() => {
+        setIsTimerRunning((prevIsTimerRunning) => {
+            if (!prevIsTimerRunning) {
+                const newTimerID = setInterval(() => {
                     setCurrentTime((prevTime) => prevTime - 1);
-                }, 1000)
-            );
-            setIsTimerRunning(true);
-        } else {
-            clearInterval(timerID);
-            setIsTimerRunning(false);
-        }
+                }, 1000);
+                setTimerID(newTimerID);
+                return true;
+            } else {
+                clearInterval(timerID);
+                return false;
+            }
+        });
     }
 
     function resetTimer() {
