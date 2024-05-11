@@ -9,11 +9,16 @@
     box-sizing: border-box;
 
     font-family: 'Gotham Pro Regular', sans-serif;
-    font-size: 20px;
+    font-size: $mainAppFontSize;
 
     color: $appBlack;
 
     user-select: none;
+}
+
+*::selection {
+    color: $appBackground;
+    background-color: $appBlue;
 }
 
 body {
@@ -26,6 +31,6 @@ body {
     margin: 0 auto;
     padding: 0 8px;
 
-    border-right: 1px solid red;
-    border-left: 1px solid red;
+    //border-right: 1px solid red;
+    //border-left: 1px solid red;
 }
