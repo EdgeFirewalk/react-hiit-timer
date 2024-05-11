@@ -17,10 +17,19 @@ function App() {
         useState(false);
 
     function openOrCloseTimerSettingsWindow() {
-        !isTimerSettingsWindowOpen
-            ? setIsTimerSettingsWindowOpen(true)
-            : setIsTimerSettingsWindowOpen(false);
+        if (!isTimerSettingsWindowOpen) {
+            window.document.body.style.overflow = 'hidden';
+            setIsTimerSettingsWindowOpen(true);
+        }
+        else {
+            window.document.body.style.overflow = 'visible';
+            setIsTimerSettingsWindowOpen(false);
+        }
     }
+
+    window.document.body.addEventListener('keydown', e => {
+        if (e.keyCode === 27 && isTimerSettingsWindowOpen) { setIsTimerSettingsWindowOpen(false); }
+    });
 
     return (
         <div className="App">
