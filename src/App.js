@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import './styles/App.scss';
 
@@ -11,7 +11,17 @@ function App() {
         restTime: 15
     });
 
-    // Здесь в useEffect получать данные о настройках таймера из localStorage
+    useEffect(() => {
+        const loadedTimerSettings = JSON.parse(
+            localStorage.getItem('savedTimerSettings')
+        );
+
+        if (loadedTimerSettings === null) {
+            return;
+        }
+
+        setTimerSettings(loadedTimerSettings);
+    }, []);
 
     const [isTimerSettingsWindowOpen, setIsTimerSettingsWindowOpen] =
         useState(false);
