@@ -54,7 +54,7 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
             handleTimerKeyboardButtonPressed
         );
 
-        if (currentTime <= 3 && currentTime !== 0) {
+        if (currentTime <= 3 && currentTime !== 0 && isTimerRunning) {
             playCountdownSound();
         }
 
@@ -75,15 +75,9 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
                 handleTimerKeyboardButtonPressed
             );
         };
-    }, [
-        currentTime,
-        workoutState,
-        TimerSettings.restTime,
-        TimerSettings.workTime,
-        playBeepSound,
-        playCountdownSound,
-        handleTimerKeyboardButtonPressed
-    ]);
+    }, [currentTime]);
+
+    useEffect(() => resetTimer(), [TimerSettings]);
 
     function startOrPauseTimer() {
         setIsTimerRunning((prevIsTimerRunning) => {
