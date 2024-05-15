@@ -39,6 +39,7 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
         switch (e.keyCode) {
             case 32:
                 startOrPauseTimer();
+                playCountdownSound();
                 break;
             case 82:
                 resetTimer();
