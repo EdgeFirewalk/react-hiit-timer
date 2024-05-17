@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import useSound from 'use-sound';
 
 import '../styles/HIITTimer.scss';
@@ -20,7 +20,7 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
     /* Timer things */
     const [currentTime, setCurrentTime] = useState(TimerSettings.workTime);
     const [isTimerRunning, setIsTimerRunning] = useState(false);
-    const [timerID, setTimerID] = useState(null);
+    const [isSpaceKeyDown, setIsSpaceKeyDown] = useState(false);
 
     /* Workout/Exercises things */
     const [workoutState, setWorkoutState] = useState('work'); // 'work' or 'rest'
@@ -35,11 +35,26 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
         OpenOrCloseTimerSettingsWindow();
     }
 
+    const startOrPauseTimer = useCallback(
+        debounce(() => {
+            setIsTimerRunning((prevIsTimerRunning) => {
+                const newIsTimerRunning = !prevIsTimerRunning;
+                if (newIsTimerRunning) {
+                    playCountdownSound();
+                }
+                return newIsTimerRunning;
+            });
+        }, 20),
+        []
+    );
+
     function handleTimerKeyboardButtonPressed(e) {
         switch (e.keyCode) {
             case 32:
-                startOrPauseTimer();
-                playCountdownSound();
+                if (!isSpaceKeyDown) {
+                    setIsSpaceKeyDown(true);
+                    startOrPauseTimer();
+                }
                 break;
             case 82:
                 resetTimer();
@@ -49,10 +64,30 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
         }
     }
 
+    function handleTimerKeyboardButtonReleased(e) {
+        switch (e.keyCode) {
+            case 32:
+                setIsSpaceKeyDown(false);
+                break;
+            default:
+                break;
+        }
+    }
+
+    function resetTimer() {
+        workoutState === 'work'
+            ? setCurrentTime(TimerSettings.workTime)
+            : setCurrentTime(TimerSettings.restTime);
+    }
+
     useEffect(() => {
         window.document.body.addEventListener(
             'keydown',
             handleTimerKeyboardButtonPressed
+        );
+        window.document.body.addEventListener(
+            'keyup',
+            handleTimerKeyboardButtonReleased
         );
 
         if (currentTime <= 3 && currentTime !== 0 && isTimerRunning) {
@@ -70,36 +105,27 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
             playBeepSound();
         }
 
-        return () => {
-            window.document.body.removeEventListener(
-                'keydown',
-                handleTimerKeyboardButtonPressed
-            );
-        };
-    }, [currentTime]);
+        if (isTimerRunning && !isSpaceKeyDown) {
+            const timerIntervalID = setInterval(() => {
+                setCurrentTime((prevTime) => prevTime - 1);
+            }, 1000);
+            return () => {
+                clearInterval(timerIntervalID);
+            };
+        }
+    }, [
+        currentTime,
+        isTimerRunning,
+        workoutState,
+        TimerSettings.workTime,
+        TimerSettings.restTime,
+        isSpaceKeyDown,
+        startOrPauseTimer
+    ]);
 
     useEffect(() => resetTimer(), [TimerSettings]);
 
-    function startOrPauseTimer() {
-        setIsTimerRunning((prevIsTimerRunning) => {
-            if (!prevIsTimerRunning) {
-                const newTimerID = setInterval(() => {
-                    setCurrentTime((prevTime) => prevTime - 1);
-                }, 1000);
-                setTimerID(newTimerID);
-                return true;
-            } else {
-                clearInterval(timerID);
-                return false;
-            }
-        });
-    }
-
-    function resetTimer() {
-        workoutState === 'work'
-            ? setCurrentTime(TimerSettings.workTime)
-            : setCurrentTime(TimerSettings.restTime);
-    }
+    useEffect(() => playCountdownSound(), [isTimerRunning]);
 
     return (
         <div className="hiit-timer">
@@ -110,9 +136,7 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
                         ButtonIcon={SettingsIcon}
                         OnClick={openTimerSettingsWindow}
                     />
-                    <div className="hiit-timer__stage App-title">
-                        {workoutState}
-                    </div>
+                    <div className="hiit-timer__stage App-title">{workoutState}</div>
                     <div className="hiit-timer__time">{currentTime}</div>
                     <div className="timer-buttons">
                         <AppButton ButtonIcon={PreviousExerciseIcon} />
@@ -120,10 +144,7 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
                             ButtonIcon={isTimerRunning ? PauseIcon : PlayIcon}
                             OnClick={startOrPauseTimer}
                         />
-                        <AppButton
-                            ButtonIcon={ResetIcon}
-                            OnClick={resetTimer}
-                        />
+                        <AppButton ButtonIcon={ResetIcon} OnClick={resetTimer} />
                         <AppButton ButtonIcon={NextExerciseIcon} />
                     </div>
                 </div>
@@ -131,5 +152,15 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
         </div>
     );
 };
+
+function debounce(fn, delay) {
+    let debounceTimer;
+    return function () {
+        const context = this;
+        const args = arguments;
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => fn.apply(context, args), delay);
+    };
+}
 
 export default HIITTimer;
