@@ -1,11 +1,8 @@
 import React from 'react';
-import useSound from 'use-sound';
 
 import '../styles/TimerSettings.scss';
 
 import CloseIcon from '../img/close-icon.svg';
-
-import CloseSettingsSound from '../sounds/settings-close.mp3';
 
 import AppButton from './AppButton';
 
@@ -15,13 +12,6 @@ const TimerSettings = ({
     OpenOrCloseTimerSettingsWindow,
     TimerSettingsWindowStyle
 }) => {
-    const [playCloseSettingsSound] = useSound(CloseSettingsSound);
-
-    function closeTimerSettings() {
-        playCloseSettingsSound();
-        OpenOrCloseTimerSettingsWindow();
-    }
-
     function setNewTimerSettings(settingName, newTimeValue, defaultTimeValue) {
         const newTimerSettings = {
             ...TimerSettings,
@@ -47,7 +37,7 @@ const TimerSettings = ({
                     <AppButton
                         ButtonIcon={CloseIcon}
                         AdditionalClass="timer-settings__close-button"
-                        OnClick={closeTimerSettings}
+                        OnClick={OpenOrCloseTimerSettingsWindow}
                     />
                     <p className="timer-settings__title App-title">Settings</p>
                     <div className="settings-inputs">
