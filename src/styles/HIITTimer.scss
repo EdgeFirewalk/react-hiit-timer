@@ -20,20 +20,13 @@
     font-size: $timerStageFontSize;
 }
 
-.hiit-timer__time {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 280px;
-    height: 280px;
+.hiit-timer__time-wrapper {
     margin: 50px 0;
-    padding: 80px;
+}
 
+.hiit-timer__time {
     font-family: 'Gotham Pro Light', sans-serif;
     font-size: $timerTimeFontSize;
-
-    border: 3px solid $appBlue;
-    border-radius: 100%;
 }
 
 .timer-buttons {
