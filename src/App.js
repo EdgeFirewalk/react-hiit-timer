@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import './styles/App.scss';
 
@@ -10,6 +10,8 @@ function App() {
         workTime: 45,
         restTime: 15
     });
+    const [isTimerSettingsWindowOpen, setIsTimerSettingsWindowOpen] =
+        useState(false);
 
     useEffect(() => {
         const loadedTimerSettings = JSON.parse(
@@ -23,9 +25,6 @@ function App() {
         setTimerSettings(loadedTimerSettings);
     }, []);
 
-    const [isTimerSettingsWindowOpen, setIsTimerSettingsWindowOpen] =
-        useState(false);
-
     function openOrCloseTimerSettingsWindow() {
         if (!isTimerSettingsWindowOpen) {
             window.document.body.style.overflow = 'hidden';
@@ -36,9 +35,12 @@ function App() {
         }
     }
 
+    // e.preventDefault() специально не вынесен за if, потому что я не хочу блокировать прям все клавиши,
+    // например, F5, который удобно использовать для обновления страницы
     window.document.body.addEventListener('keydown', (e) => {
-        if (e.keyCode === 27 && isTimerSettingsWindowOpen) {
-            setIsTimerSettingsWindowOpen(false);
+        if (e.code === 'Escape' && isTimerSettingsWindowOpen) {
+            e.preventDefault();
+            openOrCloseTimerSettingsWindow();
         }
     });
 
