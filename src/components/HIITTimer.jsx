@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import useSound from 'use-sound';
 
 import '../styles/HIITTimer.scss';
@@ -10,7 +11,6 @@ import PauseIcon from '../img/pause-icon.svg';
 import ResetIcon from '../img/reset-icon.svg';
 import NextExerciseIcon from '../img/next-icon.svg';
 
-import OpenSettingsSound from '../sounds/settings-open.mp3';
 import CountdownSound from '../sounds/countdown.mp3';
 import BeepSound from '../sounds/beep.mp3';
 
@@ -18,113 +18,55 @@ import AppButton from './AppButton';
 
 const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
     /* Timer things */
-    const [currentTime, setCurrentTime] = useState(TimerSettings.workTime);
     const [isTimerRunning, setIsTimerRunning] = useState(false);
-    const [isSpaceKeyDown, setIsSpaceKeyDown] = useState(false);
+    const [timerKey, setTimerKey] = useState(0);
 
     /* Workout/Exercises things */
     const [workoutState, setWorkoutState] = useState('work'); // 'work' or 'rest'
 
     /* UI sounds */
-    const [playOpenSettingsSound] = useSound(OpenSettingsSound);
     const [playCountdownSound] = useSound(CountdownSound);
     const [playBeepSound] = useSound(BeepSound);
 
-    function openTimerSettingsWindow() {
-        playOpenSettingsSound();
-        OpenOrCloseTimerSettingsWindow();
+    function resetTimer() {
+        setTimerKey((prevKey) => prevKey + 1);
     }
 
-    const startOrPauseTimer = useCallback(
-        debounce(() => {
-            setIsTimerRunning((prevIsTimerRunning) => {
-                const newIsTimerRunning = !prevIsTimerRunning;
-                if (newIsTimerRunning) {
-                    playCountdownSound();
-                }
-                return newIsTimerRunning;
-            });
-        }, 20),
-        []
+    function startOrPauseTimer() {
+        setIsTimerRunning((running) => !running);
+    }
+
+    // e.preventDefault() специально не вынесен за switch, потому что я не хочу блокировать прям все клавиши,
+    // например, F5, который удобно использовать для обновления страницы
+    const handleKeyPress = useCallback(
+        (e) => {
+            switch (e.code) {
+                case 'Space':
+                    e.preventDefault();
+                    startOrPauseTimer();
+                    break;
+                case 'KeyR':
+                    e.preventDefault();
+                    resetTimer();
+                    break;
+                default:
+                    break;
+            }
+        },
+        [startOrPauseTimer, resetTimer]
     );
 
-    function handleTimerKeyboardButtonPressed(e) {
-        switch (e.keyCode) {
-            case 32:
-                if (!isSpaceKeyDown) {
-                    setIsSpaceKeyDown(true);
-                    startOrPauseTimer();
-                }
-                break;
-            case 82:
-                resetTimer();
-                break;
-            default:
-                break;
-        }
-    }
-
-    function handleTimerKeyboardButtonReleased(e) {
-        switch (e.keyCode) {
-            case 32:
-                setIsSpaceKeyDown(false);
-                break;
-            default:
-                break;
-        }
-    }
-
-    function resetTimer() {
-        workoutState === 'work'
-            ? setCurrentTime(TimerSettings.workTime)
-            : setCurrentTime(TimerSettings.restTime);
-    }
-
     useEffect(() => {
-        window.document.body.addEventListener(
-            'keydown',
-            handleTimerKeyboardButtonPressed
-        );
-        window.document.body.addEventListener(
-            'keyup',
-            handleTimerKeyboardButtonReleased
-        );
+        window.addEventListener('keydown', handleKeyPress);
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [handleKeyPress]);
 
-        if (currentTime <= 3 && currentTime !== 0 && isTimerRunning) {
-            playCountdownSound();
-        }
-
-        if (currentTime <= 0) {
-            if (workoutState === 'work') {
-                setCurrentTime(TimerSettings.restTime);
-                setWorkoutState('rest');
-            } else {
-                setCurrentTime(TimerSettings.workTime);
-                setWorkoutState('work');
-            }
-            playBeepSound();
-        }
-
-        if (isTimerRunning && !isSpaceKeyDown) {
-            const timerIntervalID = setInterval(() => {
-                setCurrentTime((prevTime) => prevTime - 1);
-            }, 1000);
-            return () => {
-                clearInterval(timerIntervalID);
-            };
-        }
-    }, [
-        currentTime,
-        isTimerRunning,
-        workoutState,
-        TimerSettings.workTime,
-        TimerSettings.restTime,
-        isSpaceKeyDown,
-        startOrPauseTimer
-    ]);
-
+    // Обновляем таймер, когда изменются настройки, чтобы они сразу применились
     useEffect(() => resetTimer(), [TimerSettings]);
 
+    // Проигрываем звук, когда таймер останавливают или запускают
     useEffect(() => playCountdownSound(), [isTimerRunning]);
 
     return (
@@ -134,17 +76,67 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
                     <AppButton
                         AdditionalClass="hiit-timer__settings"
                         ButtonIcon={SettingsIcon}
-                        OnClick={openTimerSettingsWindow}
+                        OnClick={OpenOrCloseTimerSettingsWindow}
                     />
-                    <div className="hiit-timer__stage App-title">{workoutState}</div>
-                    <div className="hiit-timer__time">{currentTime}</div>
+                    <div className="hiit-timer__stage App-title">
+                        {workoutState}
+                    </div>
+                    <div className="hiit-timer__time-wrapper">
+                        {/*
+                            Documentation on the timer used:
+                                https://github.com/vydimitrov/react-countdown-circle-timer/tree/master/packages/web#react-countdown-circle-timer
+                        */}
+                        <CountdownCircleTimer
+                            className="hiit-timer__time"
+                            key={timerKey}
+                            size="280"
+                            colors="#1299f6"
+                            trailColor="#d8d8d8"
+                            strokeWidth="3"
+                            isPlaying={isTimerRunning}
+                            duration={
+                                workoutState === 'work'
+                                    ? TimerSettings.workTime
+                                    : TimerSettings.restTime
+                            }
+                            onUpdate={(remainingTime) => {
+                                if (
+                                    remainingTime <= 3 &&
+                                    remainingTime !== 0 &&
+                                    isTimerRunning
+                                ) {
+                                    playCountdownSound();
+                                }
+                            }}
+                            onComplete={() => {
+                                if (workoutState === 'work') {
+                                    setWorkoutState('rest');
+                                } else {
+                                    setWorkoutState('work');
+                                }
+                                playBeepSound();
+
+                                // Перезапускаем таймер в новой стадии
+                                setTimerKey((prevKey) => prevKey + 1);
+                            }}
+                        >
+                            {({ remainingTime }) => (
+                                <div className="hiit-timer__time">
+                                    {remainingTime}
+                                </div>
+                            )}
+                        </CountdownCircleTimer>
+                    </div>
                     <div className="timer-buttons">
                         <AppButton ButtonIcon={PreviousExerciseIcon} />
                         <AppButton
                             ButtonIcon={isTimerRunning ? PauseIcon : PlayIcon}
                             OnClick={startOrPauseTimer}
                         />
-                        <AppButton ButtonIcon={ResetIcon} OnClick={resetTimer} />
+                        <AppButton
+                            ButtonIcon={ResetIcon}
+                            OnClick={resetTimer}
+                        />
                         <AppButton ButtonIcon={NextExerciseIcon} />
                     </div>
                 </div>
@@ -152,15 +144,5 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
         </div>
     );
 };
-
-function debounce(fn, delay) {
-    let debounceTimer;
-    return function () {
-        const context = this;
-        const args = arguments;
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => fn.apply(context, args), delay);
-    };
-}
 
 export default HIITTimer;
