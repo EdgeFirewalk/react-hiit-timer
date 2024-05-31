@@ -32,3 +32,22 @@
 .timer-buttons {
     display: flex;
 }
+
+.hiit-timer__info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.info-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.info-block__title {
+    font-family: 'Gotham Pro Medium', sans-serif;
+    text-transform: uppercase;
+}
