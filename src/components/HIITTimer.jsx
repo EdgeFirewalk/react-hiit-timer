@@ -20,9 +20,14 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
     /* Timer things */
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [timerKey, setTimerKey] = useState(0);
+    const [prevStageTotalTime, setPrevStageTotalTime] = useState(0);
 
     /* Workout/Exercises things */
     const [workoutState, setWorkoutState] = useState('work'); // 'work' or 'rest'
+    const [totalWorkTime, setTotalWorkTime] = useState(0);
+
+    // Используется для подсчёта общего времени тренировки
+    let prevRemainingTime = workoutState === 'work' ? TimerSettings.workTime : TimerSettings.restTime;
 
     /* UI sounds */
     const [playCountdownSound] = useSound(CountdownSound);
@@ -34,6 +39,16 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
 
     function startOrPauseTimer() {
         setIsTimerRunning((running) => !running);
+    }
+
+    function formatTotalWorkTime(seconds) {
+        let hrs = Math.floor(seconds / 3600);
+        let min = Math.floor((seconds % 3600) / 60);
+        let sec = Math.floor(seconds % 60);
+        hrs = (hrs < 10) ? "0" + hrs : hrs;
+        min = (min < 10) ? "0" + min : min;
+        sec = (sec < 10) ? "0" + sec : sec;
+        return hrs + ":" + min + ":" + sec;
     }
 
     // e.preventDefault() специально не вынесен за switch, потому что я не хочу блокировать прям все клавиши,
@@ -100,6 +115,8 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
                                     : TimerSettings.restTime
                             }
                             onUpdate={(remainingTime) => {
+                                setTotalWorkTime(prevStageTotalTime + (prevRemainingTime - remainingTime));
+
                                 if (
                                     remainingTime <= 3 &&
                                     remainingTime !== 0 &&
@@ -107,11 +124,15 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
                                 ) {
                                     playCountdownSound();
                                 }
+
+                                prevRemainingTime = remainingTime;
                             }}
                             onComplete={() => {
                                 if (workoutState === 'work') {
+                                    setPrevStageTotalTime(prev => prev += TimerSettings.workTime);
                                     setWorkoutState('rest');
                                 } else {
+                                    setPrevStageTotalTime(prev => prev += TimerSettings.restTime);
                                     setWorkoutState('work');
                                 }
                                 playBeepSound();
@@ -138,6 +159,16 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
                             OnClick={resetTimer}
                         />
                         <AppButton ButtonIcon={NextExerciseIcon} />
+                    </div>
+                    <div className='hiit-timer__info'>
+                        <div className='info-block'>
+                            <div className='info-block__title'>Total time:</div>
+                            <div className='info-block__info'>{formatTotalWorkTime(totalWorkTime)}</div>
+                        </div>
+                        <div className='info-block'>
+                            <div className='info-block__title'>Round №</div>
+                            <div className='info-block__info'>0</div>
+                        </div>
                     </div>
                 </div>
             </div>
