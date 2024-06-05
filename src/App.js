@@ -64,6 +64,9 @@ function App() {
 
     return (
         <div className="App">
+            <div className='App-blocker'>
+                <p className='App-blocker__message'>The app is not available on this device <span className='App-blocker__span'>screen size</span>. The minimal size is <span className='App-blocker__span'>295x560</span> px.</p>
+            </div>
             <TimerTips
                 OpenOrCloseTimerTipsWindow={openOrCloseTimerTipsWindow}
                 TimerTipsWindowStyle={{
