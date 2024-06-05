@@ -28,7 +28,7 @@ function App() {
         setTimerSettings(loadedTimerSettings);
     }, []);
 
-    function OpenOrCloseTimerTipsWindow() {
+    function openOrCloseTimerTipsWindow() {
         if (!isTimerTipsWindowOpen) {
             window.document.body.style.overflow = 'hidden';
             setIsTimerTipsWindowOpen(true);
@@ -51,16 +51,21 @@ function App() {
     // e.preventDefault() специально не вынесен за if, потому что я не хочу блокировать прям все клавиши,
     // например, F5, который удобно использовать для обновления страницы
     window.document.body.addEventListener('keydown', (e) => {
-        if (e.code === 'Escape' && isTimerSettingsWindowOpen) {
+        if (e.code === 'Escape') {
             e.preventDefault();
-            openOrCloseTimerSettingsWindow();
+            if (isTimerTipsWindowOpen) {
+                openOrCloseTimerTipsWindow();
+            }
+            else if (isTimerSettingsWindowOpen) {
+                openOrCloseTimerSettingsWindow();
+            }
         }
     });
 
     return (
         <div className="App">
             <TimerTips
-                OpenOrCloseTimerTipsWindow={OpenOrCloseTimerTipsWindow}
+                OpenOrCloseTimerTipsWindow={openOrCloseTimerTipsWindow}
                 TimerTipsWindowStyle={{
                     visibility: isTimerTipsWindowOpen ? 'visible' : 'hidden'
                 }}
@@ -75,7 +80,7 @@ function App() {
             />
             <HIITTimer
                 TimerSettings={timerSettings}
-                OpenOrCloseTimerTipsWindow={OpenOrCloseTimerTipsWindow}
+                OpenOrCloseTimerTipsWindow={openOrCloseTimerTipsWindow}
                 OpenOrCloseTimerSettingsWindow={openOrCloseTimerSettingsWindow}
             />
         </div>
