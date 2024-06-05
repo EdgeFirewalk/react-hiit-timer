@@ -23,6 +23,9 @@ const TimerTips = ({OpenOrCloseTimerTipsWindow, TimerTipsWindowStyle}) => {
                     <p className='timer-tips__tip'>
                         <span className='timer-tips__span'>[R]</span> — restart timer at any time.
                     </p>
+                    <p className='timer-tips__tip'>
+                        <span className='timer-tips__span'>[ESC]</span> — close modal windows such as this one.
+                    </p>
                 </div>
             </div>
         </div>
