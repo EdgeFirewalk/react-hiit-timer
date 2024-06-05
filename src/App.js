@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import './styles/App.scss';
 
+import TimerTips from './components/TimerTips';
 import TimerSettings from './components/TimerSettings';
 import HIITTimer from './components/HIITTimer';
 
@@ -10,6 +11,8 @@ function App() {
         workTime: 45,
         restTime: 15
     });
+    const [isTimerTipsWindowOpen, setIsTimerTipsWindowOpen] =
+        useState(false);
     const [isTimerSettingsWindowOpen, setIsTimerSettingsWindowOpen] =
         useState(false);
 
@@ -24,6 +27,16 @@ function App() {
 
         setTimerSettings(loadedTimerSettings);
     }, []);
+
+    function OpenOrCloseTimerTipsWindow() {
+        if (!isTimerTipsWindowOpen) {
+            window.document.body.style.overflow = 'hidden';
+            setIsTimerTipsWindowOpen(true);
+        } else {
+            window.document.body.style.overflow = 'visible';
+            setIsTimerTipsWindowOpen(false);
+        }
+    }
 
     function openOrCloseTimerSettingsWindow() {
         if (!isTimerSettingsWindowOpen) {
@@ -46,6 +59,12 @@ function App() {
 
     return (
         <div className="App">
+            <TimerTips
+                OpenOrCloseTimerTipsWindow={OpenOrCloseTimerTipsWindow}
+                TimerTipsWindowStyle={{
+                    visibility: isTimerTipsWindowOpen ? 'visible' : 'hidden'
+                }}
+            />
             <TimerSettings
                 TimerSettings={timerSettings}
                 SetTimerSettings={setTimerSettings}
@@ -56,6 +75,7 @@ function App() {
             />
             <HIITTimer
                 TimerSettings={timerSettings}
+                OpenOrCloseTimerTipsWindow={OpenOrCloseTimerTipsWindow}
                 OpenOrCloseTimerSettingsWindow={openOrCloseTimerSettingsWindow}
             />
         </div>
