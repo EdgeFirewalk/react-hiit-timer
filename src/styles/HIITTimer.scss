@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: center;
     width: 80%;
-    margin: 30px auto;
+    margin: 10px auto;
     padding: 20px;
 
     box-shadow: 0 0 10px $appShadow;
@@ -53,4 +53,30 @@
 .info-block__title {
     font-family: 'Gotham Pro Medium', sans-serif;
     text-transform: uppercase;
+}
+
+@media (max-width: 400px) or (max-height: 710px) {
+    .hiit-timer__inner {
+        margin: 0 auto;
+        padding: 0;
+        min-height: 100vh;
+
+        box-shadow: none;
+    }
+
+    .hiit-timer__stage {
+        font-size: 75px;
+    }
+}
+
+@media (max-height: 710px) {
+    .hiit-timer__time-wrapper {
+        margin: 20px 0;
+    }
+}
+
+@media (max-height: 650px) {
+    .hiit-timer__time-wrapper {
+        margin: 10px 0;
+    }
 }

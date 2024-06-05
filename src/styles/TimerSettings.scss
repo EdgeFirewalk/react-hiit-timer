@@ -26,6 +26,7 @@
 
     border: none;
     border-bottom: 2px solid $appBlack;
+    background-color: transparent;
 
     outline: none;
 }
@@ -39,4 +40,16 @@
     text-align: center;
 
     color: $appGreen;
+}
+
+@media (max-width: 440px) {
+    .settings-inputs {
+        width: 60%;
+    }
+}
+
+@media (max-width: 315px) {
+    .settings-inputs {
+        width: 75%;
+    }
 }
