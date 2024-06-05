@@ -16,7 +16,7 @@ const TimerTips = ({OpenOrCloseTimerTipsWindow, TimerTipsWindowStyle}) => {
                         AdditionalClass="modal-window__close-button"
                         OnClick={OpenOrCloseTimerTipsWindow}
                     />
-                    <p className="timer-tips__title App-title">How to use</p>
+                    <p className="timer-tips__title App-title">Hotkeys</p>
                     <p className='timer-tips__tip'>
                         <span className='timer-tips__span'>[SPACE]</span> — start/pause timer at any time.
                     </p>
