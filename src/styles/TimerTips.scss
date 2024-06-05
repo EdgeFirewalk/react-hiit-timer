@@ -1,0 +1,16 @@
+@import 'variables';
+
+.timer-tips__title {
+  margin-bottom: 25px;
+}
+
+.timer-tips__tip {
+  width: 100%;
+  margin: 5px 0;
+
+  text-align: justify;
+}
+
+.timer-tips__span {
+  color: $appBlue;
+}
