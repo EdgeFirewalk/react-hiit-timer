@@ -4,6 +4,7 @@ import useSound from 'use-sound';
 
 import '../styles/HIITTimer.scss';
 
+import QuestionIcon from '../img/question-icon.svg';
 import SettingsIcon from '../img/settings-icon.svg';
 import PreviousExerciseIcon from '../img/previous-icon.svg';
 import PlayIcon from '../img/play-icon.svg';
@@ -16,7 +17,7 @@ import BeepSound from '../sounds/beep.mp3';
 
 import AppButton from './AppButton';
 
-const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
+const HIITTimer = ({ TimerSettings, OpenOrCloseTimerTipsWindow, OpenOrCloseTimerSettingsWindow }) => {
     /* Timer things */
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [timerKey, setTimerKey] = useState(0);
@@ -88,11 +89,18 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerSettingsWindow }) => {
         <div className="hiit-timer">
             <div className="container">
                 <div className="hiit-timer__inner">
-                    <AppButton
-                        AdditionalClass="hiit-timer__settings"
-                        ButtonIcon={SettingsIcon}
-                        OnClick={OpenOrCloseTimerSettingsWindow}
-                    />
+                    <div className='hiit-timer__header'>
+                        <AppButton
+                            AdditionalClass="hiit-timer__tips"
+                            ButtonIcon={QuestionIcon}
+                            OnClick={OpenOrCloseTimerTipsWindow}
+                        />
+                        <AppButton
+                            AdditionalClass="hiit-timer__settings"
+                            ButtonIcon={SettingsIcon}
+                            OnClick={OpenOrCloseTimerSettingsWindow}
+                        />
+                    </div>
                     <div className="hiit-timer__stage App-title">
                         {workoutState}
                     </div>
