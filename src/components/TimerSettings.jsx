@@ -31,12 +31,12 @@ const TimerSettings = ({
     }
 
     return (
-        <div className="timer-settings" style={TimerSettingsWindowStyle}>
+        <div className="timer-settings modal-window" style={TimerSettingsWindowStyle}>
             <div className="container">
-                <div className="timer-settings__inner">
+                <div className="modal-window__inner">
                     <AppButton
                         ButtonIcon={CloseIcon}
-                        AdditionalClass="timer-settings__close-button"
+                        AdditionalClass="modal-window__close-button"
                         OnClick={OpenOrCloseTimerSettingsWindow}
                     />
                     <p className="timer-settings__title App-title">Settings</p>
