@@ -11,8 +11,8 @@ function App() {
         workTime: 45,
         restTime: 15
     });
-    const [isTimerTipsWindowOpen, setIsTimerTipsWindowOpen] =
-        useState(false);
+
+    const [isTimerTipsWindowOpen, setIsTimerTipsWindowOpen] = useState(false);
     const [isTimerSettingsWindowOpen, setIsTimerSettingsWindowOpen] =
         useState(false);
 
@@ -48,24 +48,15 @@ function App() {
         }
     }
 
-    // e.preventDefault() специально не вынесен за if, потому что я не хочу блокировать прям все клавиши,
-    // например, F5, который удобно использовать для обновления страницы
-    window.document.body.addEventListener('keydown', (e) => {
-        if (e.code === 'Escape') {
-            e.preventDefault();
-            if (isTimerTipsWindowOpen) {
-                openOrCloseTimerTipsWindow();
-            }
-            else if (isTimerSettingsWindowOpen) {
-                openOrCloseTimerSettingsWindow();
-            }
-        }
-    });
-
     return (
         <div className="App">
-            <div className='App-blocker'>
-                <p className='App-blocker__message'>The app is not available on this device <span className='App-blocker__span'>screen size</span>. The minimal size is <span className='App-blocker__span'>295x560</span> px.</p>
+            <div className="App-blocker">
+                <p className="App-blocker__message">
+                    The app is not available on this device{' '}
+                    <span className="App-blocker__span">screen size</span>. The
+                    minimal size is{' '}
+                    <span className="App-blocker__span">295x560</span> px.
+                </p>
             </div>
             <TimerTips
                 OpenOrCloseTimerTipsWindow={openOrCloseTimerTipsWindow}
