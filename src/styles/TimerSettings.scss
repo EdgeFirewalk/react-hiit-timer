@@ -42,6 +42,13 @@
     color: $appGreen;
 }
 
+.timer-settings__error {
+    font-size: $appSmallFontSize;
+    text-align: center;
+
+    color: $appRed;
+}
+
 @media (max-width: 440px) {
     .settings-inputs {
         width: 60%;

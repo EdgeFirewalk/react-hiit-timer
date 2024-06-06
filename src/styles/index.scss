@@ -73,6 +73,10 @@ body {
     border: 2px solid $appBlack !important;
 }
 
+.modal-window__hidden-button {
+    visibility: hidden;
+}
+
 @media (max-width: 400px) or (max-height: 650px) {
     *,
     *::before,
