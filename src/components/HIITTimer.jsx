@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import useSound from 'use-sound';
 
@@ -17,7 +17,11 @@ import BeepSound from '../sounds/beep.mp3';
 
 import AppButton from './AppButton';
 
-const HIITTimer = ({ TimerSettings, OpenOrCloseTimerTipsWindow, OpenOrCloseTimerSettingsWindow }) => {
+const HIITTimer = ({
+    TimerSettings,
+    OpenOrCloseTimerTipsWindow,
+    OpenOrCloseTimerSettingsWindow
+}) => {
     /* Timer things */
     const [isTimerRunning, setIsTimerRunning] = useState(false);
     const [timerKey, setTimerKey] = useState(0);
@@ -28,7 +32,10 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerTipsWindow, OpenOrCloseTimer
     const [totalWorkTime, setTotalWorkTime] = useState(0);
 
     // Используется для подсчёта общего времени тренировки
-    let prevRemainingTime = workoutState === 'work' ? TimerSettings.workTime : TimerSettings.restTime;
+    let prevRemainingTime =
+        workoutState === 'work'
+            ? TimerSettings.workTime
+            : TimerSettings.restTime;
 
     /* UI sounds */
     const [playCountdownSound] = useSound(CountdownSound);
@@ -46,38 +53,11 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerTipsWindow, OpenOrCloseTimer
         let hrs = Math.floor(seconds / 3600);
         let min = Math.floor((seconds % 3600) / 60);
         let sec = Math.floor(seconds % 60);
-        hrs = (hrs < 10) ? "0" + hrs : hrs;
-        min = (min < 10) ? "0" + min : min;
-        sec = (sec < 10) ? "0" + sec : sec;
-        return hrs + ":" + min + ":" + sec;
+        hrs = hrs < 10 ? '0' + hrs : hrs;
+        min = min < 10 ? '0' + min : min;
+        sec = sec < 10 ? '0' + sec : sec;
+        return hrs + ':' + min + ':' + sec;
     }
-
-    // e.preventDefault() специально не вынесен за switch, потому что я не хочу блокировать прям все клавиши,
-    // например, F5, который удобно использовать для обновления страницы
-    const handleKeyPress = useCallback(
-        (e) => {
-            switch (e.code) {
-                case 'Space':
-                    e.preventDefault();
-                    startOrPauseTimer();
-                    break;
-                case 'KeyR':
-                    e.preventDefault();
-                    resetTimer();
-                    break;
-                default:
-                    break;
-            }
-        },
-        [startOrPauseTimer, resetTimer]
-    );
-
-    useEffect(() => {
-        window.addEventListener('keydown', handleKeyPress);
-        return () => {
-            window.removeEventListener('keydown', handleKeyPress);
-        };
-    }, [handleKeyPress]);
 
     // Обновляем таймер, когда изменются настройки, чтобы они сразу применились
     useEffect(() => resetTimer(), [TimerSettings]);
@@ -89,7 +69,7 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerTipsWindow, OpenOrCloseTimer
         <div className="hiit-timer">
             <div className="container">
                 <div className="hiit-timer__inner">
-                    <div className='hiit-timer__header'>
+                    <div className="hiit-timer__header">
                         <AppButton
                             AdditionalClass="hiit-timer__tips"
                             ButtonIcon={QuestionIcon}
@@ -123,7 +103,10 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerTipsWindow, OpenOrCloseTimer
                                     : TimerSettings.restTime
                             }
                             onUpdate={(remainingTime) => {
-                                setTotalWorkTime(prevStageTotalTime + (prevRemainingTime - remainingTime));
+                                setTotalWorkTime(
+                                    prevStageTotalTime +
+                                        (prevRemainingTime - remainingTime)
+                                );
 
                                 if (
                                     remainingTime <= 3 &&
@@ -137,10 +120,16 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerTipsWindow, OpenOrCloseTimer
                             }}
                             onComplete={() => {
                                 if (workoutState === 'work') {
-                                    setPrevStageTotalTime(prev => prev += TimerSettings.workTime);
+                                    setPrevStageTotalTime(
+                                        (prev) =>
+                                            (prev += TimerSettings.workTime)
+                                    );
                                     setWorkoutState('rest');
                                 } else {
-                                    setPrevStageTotalTime(prev => prev += TimerSettings.restTime);
+                                    setPrevStageTotalTime(
+                                        (prev) =>
+                                            (prev += TimerSettings.restTime)
+                                    );
                                     setWorkoutState('work');
                                 }
                                 playBeepSound();
@@ -168,14 +157,16 @@ const HIITTimer = ({ TimerSettings, OpenOrCloseTimerTipsWindow, OpenOrCloseTimer
                         />
                         <AppButton ButtonIcon={NextExerciseIcon} />
                     </div>
-                    <div className='hiit-timer__info'>
-                        <div className='info-block'>
-                            <div className='info-block__title'>Total time:</div>
-                            <div className='info-block__info'>{formatTotalWorkTime(totalWorkTime)}</div>
+                    <div className="hiit-timer__info">
+                        <div className="info-block">
+                            <div className="info-block__title">Total time:</div>
+                            <div className="info-block__info">
+                                {formatTotalWorkTime(totalWorkTime)}
+                            </div>
                         </div>
-                        <div className='info-block'>
-                            <div className='info-block__title'>Round №</div>
-                            <div className='info-block__info'>0</div>
+                        <div className="info-block">
+                            <div className="info-block__title">Round №</div>
+                            <div className="info-block__info">0</div>
                         </div>
                     </div>
                 </div>
