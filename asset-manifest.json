@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/react-hiit-timer/static/css/main.13063c98.css",
+    "main.js": "/react-hiit-timer/static/js/main.606fbf96.js",
+    "static/js/885.21512c0c.chunk.js": "/react-hiit-timer/static/js/885.21512c0c.chunk.js",
+    "static/media/GothamProLight.ttf": "/react-hiit-timer/static/media/GothamProLight.ac4d82c65f209b7fa7e5.ttf",
+    "static/media/GothamProMedium.ttf": "/react-hiit-timer/static/media/GothamProMedium.a9012c00d0f2b41a0b13.ttf",
+    "static/media/beep.mp3": "/react-hiit-timer/static/media/beep.03e21e267a9fb5478569.mp3",
+    "static/media/GothamProRegular.ttf": "/react-hiit-timer/static/media/GothamProRegular.460892a76436eac7ff56.ttf",
+    "static/media/countdown.mp3": "/react-hiit-timer/static/media/countdown.52d279cd02bbec33ad31.mp3",
+    "static/media/settings-icon.svg": "/react-hiit-timer/static/media/settings-icon.83db7255f12b055a28df1e8339de45b5.svg",
+    "index.html": "/react-hiit-timer/index.html",
+    "static/media/reset-icon.svg": "/react-hiit-timer/static/media/reset-icon.4bc16ffc28b9558e616f1febdbcf660a.svg",
+    "static/media/close-icon.svg": "/react-hiit-timer/static/media/close-icon.d21dd28efe7ef65901afb48fdea1a94a.svg",
+    "static/media/pause-icon.svg": "/react-hiit-timer/static/media/pause-icon.d5ac52a594ebac556ebf45b488c42005.svg",
+    "static/media/play-icon.svg": "/react-hiit-timer/static/media/play-icon.7a89b010d8a83e5b86aa1554a2268aed.svg",
+    "main.13063c98.css.map": "/react-hiit-timer/static/css/main.13063c98.css.map",
+    "main.606fbf96.js.map": "/react-hiit-timer/static/js/main.606fbf96.js.map",
+    "885.21512c0c.chunk.js.map": "/react-hiit-timer/static/js/885.21512c0c.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.13063c98.css",
+    "static/js/main.606fbf96.js"
+  ]
+}
