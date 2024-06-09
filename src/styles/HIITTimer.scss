@@ -14,7 +14,7 @@
 
 .hiit-timer__header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end; // TODO: Change this to space-between when I put the timer tips button back
     align-items: center;
     width: 100%;
 }
