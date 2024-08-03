@@ -28,3 +28,7 @@ I'm leaving this project as a MVP of the actual timer app that I wanted to imple
 #### 3. Creating buttons for switching between exercises manually
 #### 4. Counting rounds of workouts + Making settings for rest time between rounds
 #### 5. Adding one more modal window with info on how the timer works and how to use it
+
+## Upd: 03.08.2024
+
+I'll get back to this project once I'm back to HIIT type of training.
